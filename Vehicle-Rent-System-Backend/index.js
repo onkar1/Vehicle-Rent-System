@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 import Routes from "./src/routes/route.js"
 // SystemConfig used to get required structure and related data for a particular page
-import systemConfig from "./src/config/SystemConfig.json" assert {type: 'json'};
+import systemConfig from "./src/config/SystemConfig.json" with {type: 'json'};
 
 // Enable CORS
 app.use(

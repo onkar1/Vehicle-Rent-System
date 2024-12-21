@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
 import path from 'path';
 // SystemConfig used to get required structure and related data for a particular page
-import systemConfig from "../config/SystemConfig.json" assert {type: 'json'};
+import systemConfig from "./SystemConfig.json" with {type: 'json'};
 const is_it_local = systemConfig.is_it_local
 
 var final_path = path.dirname(new URL(import.meta.url).pathname);
