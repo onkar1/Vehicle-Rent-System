@@ -61,25 +61,34 @@ const BookVehicle = ({ setPageCount }) => {
         var api_url = import.meta.env.VITE_BACKEND_API_URL
         axios.get(`${api_url}/vehicles`)
             .then(response => {
-                var vehicles_data = response.data
-                setVehicleData(vehicles_data);
-                var wheel_no = []
-                var vehicle_type_obj = {}
-                for (const element of vehicles_data) {
-                    if (element['num_of_wheel']) {
-                        if (!wheel_no.includes(element['num_of_wheel'])) {
-                            wheel_no.push(element['num_of_wheel'])
-                            vehicle_type_obj[element['num_of_wheel']] = []
-                            vehicle_type_obj[element['num_of_wheel']].push(element['type'])
-                        } else {
-                            if (!Object.keys(vehicle_type_obj).includes(element['type'])) {
+                if (response.status === 'SUCCESS') {
+                    var vehicles_data = response.data
+                    setVehicleData(vehicles_data);
+                    var wheel_no = []
+                    var vehicle_type_obj = {}
+                    for (const element of vehicles_data) {
+                        if (element['num_of_wheel']) {
+                            if (!wheel_no.includes(element['num_of_wheel'])) {
+                                wheel_no.push(element['num_of_wheel'])
+                                vehicle_type_obj[element['num_of_wheel']] = []
                                 vehicle_type_obj[element['num_of_wheel']].push(element['type'])
+                            } else {
+                                if (!Object.keys(vehicle_type_obj).includes(element['type'])) {
+                                    vehicle_type_obj[element['num_of_wheel']].push(element['type'])
+                                }
                             }
                         }
                     }
+                    setVehicleWheelNumberArr(wheel_no)
+                    setVehicleTypeObjArr(vehicle_type_obj)
+                } else {
+                    setLoading(false);
+                    setMessage(response.data.message)
+                    setOpen(true);
+                    setTimeout(() => {
+                        window.location.href = '/'
+                    }, 3000);
                 }
-                setVehicleWheelNumberArr(wheel_no)
-                setVehicleTypeObjArr(vehicle_type_obj)
             })
             .catch(err => {
                 setError('Error fetching vehicle types');
@@ -209,7 +218,6 @@ const BookVehicle = ({ setPageCount }) => {
 
     const handleClose = () => {
         setOpen(false);
-        // setMessage('')
     };
 
     return (
@@ -349,10 +357,6 @@ const BookVehicle = ({ setPageCount }) => {
                                                 months={1}
                                                 direction="horizontal"
                                                 minDate={minDataValid} // Disable previous days
-                                                // rangeColors={['#3f51b5']} // Customize range color
-                                                // showMonthAndYearPickers={false} // Optional, hides month/year pickers
-                                                // staticRanges={[]}
-                                                // inputRanges={[]} // Remove the input range for "Yesterday"
                                             />
                                         </Box>
                                     ) : (

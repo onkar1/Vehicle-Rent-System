@@ -4,12 +4,14 @@ import React, { useEffect, useState } from 'react';
 // import { useHistory } from 'react-router-dom'; // For navigation (if needed)
 import { Box, Grid, Card, CardContent, CardMedia, Typography, Button, CircularProgress, Container } from '@mui/material';
 import axios from 'axios';
+import MessageModal from './MessageModal'; // Import the MessageModal component
 
-const HomePage = ({setPageCount}) => {
+const HomePage = ({ setPageCount }) => {
     const [cardData, setCardData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const [open, setOpen] = useState(false);
+    const [message, setMessage] = useState('');
     // Fetch card data from the backend
     useEffect(() => {
         setPageCount(0)
@@ -17,7 +19,13 @@ const HomePage = ({setPageCount}) => {
             try {
                 var api_url = import.meta.env.VITE_BACKEND_API_URL
                 const response = await axios.get(`${api_url}/vehicles`); // Replace with your backend API URL
-                setCardData(response.data);
+                if (response.status === 'SUCCESS') {
+                    setCardData(response.data);
+                } else {
+                    setLoading(false);
+                    setMessage(response.data.message)
+                    setOpen(true);
+                }
             } catch (err) {
                 setError('Failed to fetch vehicle data');
             } finally {
@@ -46,9 +54,14 @@ const HomePage = ({setPageCount}) => {
         );
     }
 
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     return (
         // maxWidth="md" -> add these style in Container if you needed minimal screen
         <div className='main-content'>
+            <MessageModal open={open} message={message} onClose={handleClose} />
             <Container sx={{ textAlign: 'center', marginTop: 3 }}>
                 <Box>
                     <Typography variant="h3" gutterBottom>
