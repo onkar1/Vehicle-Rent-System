@@ -19,8 +19,8 @@ const HomePage = ({ setPageCount }) => {
             try {
                 var api_url = import.meta.env.VITE_BACKEND_API_URL
                 const response = await axios.get(`${api_url}/vehicles`); // Replace with your backend API URL
-                if (response.status === 'SUCCESS') {
-                    setCardData(response.data);
+                if (response.data.status === 'SUCCESS') {
+                    setCardData(response.data.data);
                 } else {
                     setLoading(false);
                     setMessage(response.data.message)

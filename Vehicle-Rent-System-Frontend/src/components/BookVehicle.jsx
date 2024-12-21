@@ -61,8 +61,8 @@ const BookVehicle = ({ setPageCount }) => {
         var api_url = import.meta.env.VITE_BACKEND_API_URL
         axios.get(`${api_url}/vehicles`)
             .then(response => {
-                if (response.status === 'SUCCESS') {
-                    var vehicles_data = response.data
+                if (response.data.status === 'SUCCESS') {
+                    var vehicles_data = response.data.data
                     setVehicleData(vehicles_data);
                     var wheel_no = []
                     var vehicle_type_obj = {}
