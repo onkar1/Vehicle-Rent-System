@@ -26,9 +26,10 @@ const Vehicle = sequelize.define('Vehicle', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  booking_end_date: {
-    type: DataTypes.DATE,
+  booking_date_arr: {
+    type: DataTypes.JSON,
     allowNull: false,
+    defaultValue: [],
   },
 });
 

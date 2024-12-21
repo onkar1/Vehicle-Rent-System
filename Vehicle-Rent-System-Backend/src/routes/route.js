@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 bodyParser.urlencoded({ extended: false });
 var jsonParser = bodyParser.json();
 import { getAllVehicles, bookVehicle } from '../controllers/vehicleController.js';
+import { create_or_reinitialize } from "../migrations/seed.js";
 
 
 // Dummy route, invoke for keeping warm instance of lambda
@@ -37,6 +38,7 @@ router.get('/dummyapi', (req, res) => {
 
 router.get('/vehicles', jsonParser, getAllVehicles);
 router.post('/book', jsonParser, bookVehicle);
+router.get('/resetdb', jsonParser, create_or_reinitialize);
 
 
 export default router;

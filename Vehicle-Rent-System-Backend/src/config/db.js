@@ -1,12 +1,18 @@
 import { Sequelize } from 'sequelize';
 import path from 'path';
+// SystemConfig used to get required structure and related data for a particular page
+import systemConfig from "../config/SystemConfig.json" assert {type: 'json'};
+const is_it_local = systemConfig.is_it_local
 
-// Use import.meta.url to get the directory name in ES modules
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
-
+var final_path = path.dirname(new URL(import.meta.url).pathname);
+if (!is_it_local) {
+  final_path = systemConfig.portal_sql_file_path;
+} else {
+  final_path = path.resolve(final_path, systemConfig.local_sql_file_path)
+}
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: path.resolve(__dirname, '../migrations/database.sqlite'), // Absolute path to SQLite file
+  storage: final_path // Absolute path to SQLite file
 });
 
 export default sequelize;
