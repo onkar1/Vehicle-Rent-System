@@ -4,8 +4,7 @@ import sequelize from '../config/db.js';
 const getAllVehicles = async (req, res) => {
   try {
     // const vehicles = await Vehicle.findAll();
-    const [vehicles, metadata] = await sequelize.query('SELECT * FROM Vehicles');
-    t
+    const [vehicles, metadata] = await sequelize.query('SELECT * FROM Vehicles where status="booked" or status="unbooked"');
     return res.status(200).json({status: 'SUCCESS', data: vehicles});
   } catch (error) {
     console.log('Failed to get data, Error Code: GAVSR41051, error: ', error)
@@ -110,7 +109,7 @@ const bookVehicle = async (req, res) => {
             'UPDATE Vehicles SET status = ?, booking_date_arr = ?, updatedAt = ? WHERE id = ?',
             {
               replacements: [
-                'Booked',
+                'booked',
                 JSON.stringify(result_of_booking.combinedDates),
                 formattedbooking_date_f,
                 vehicle_id,
