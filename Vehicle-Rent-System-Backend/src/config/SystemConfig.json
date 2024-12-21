@@ -1,0 +1,8 @@
+{
+  "is_it_local": true,
+  "local_sql_file_path": "../migrations/database.sqlite",
+  "portal_sql_file_path": "", 
+  "allowed_origins_list": [
+    "http://localhost:5173"
+  ]
+}
